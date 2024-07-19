@@ -1,7 +1,13 @@
 import re
 
 from . import utils
-
+from .storage_models import (
+    ui_cifs_config,
+    ui_nfs_config,
+    ui_acl_entries,
+    ui_ix_volume_config,
+    ui_host_path_config,
+)
 
 BIND_TYPES = ["host_path", "ix_volume"]
 VOL_TYPES = ["volume", "nfs", "cifs"]
@@ -144,9 +150,11 @@ def vol(data):
         utils.throw_error("Expected [volume_name] to be set for [volume] type")
 
     if data["type"] == "nfs":
-        return {data["volume_name"]: _process_nfs(data)}
+        return {data["volume_name"]: _get_top_level_nfs_volume(data.get("nfs_config"))}
     elif data["type"] == "cifs":
-        return {data["volume_name"]: _process_cifs(data)}
+        return {
+            data["volume_name"]: _get_top_level_cifs_volume(data.get("cifs_config"))
+        }
     else:
         return {data["volume_name"]: {}}
 
@@ -174,9 +182,11 @@ def host_path(data, ix_volumes=None):
     ix_volumes = ix_volumes or []
     path = ""
     if _is_host_path(data):
-        path = _process_host_path_config(data)
+        path = _get_host_path_from_host_path_config(data.get("host_path_config"))
     elif _is_ix_volume(data):
-        path = _process_ix_volume_config(data, ix_volumes)
+        path = _get_host_path_from_ix_volume_config(
+            data.get("ix_volume_config"), ix_volumes
+        )
     else:
         utils.throw_error(
             f"Expected [host_path()] to be called only for types [host_path, ix_volume], got [{data['type']}]"
@@ -203,74 +213,60 @@ def _get_docker_vol_type(data):
         return data["type"]
 
 
-def _process_host_path_config(data):
-    if data.get("host_path_config", {}).get("acl_enable", False):
-        if not data["host_path_config"].get("acl", {}).get("path"):
-            utils.throw_error(
-                "Expected [host_path_config.acl.path] to be set for [host_path] type with ACL enabled"
-            )
-        return data["host_path_config"]["acl"]["path"]
-
-    if not data.get("host_path_config", {}).get("path"):
-        utils.throw_error(
-            "Expected [host_path_config.path] to be set for [host_path] type"
-        )
-
-    return data["host_path_config"]["path"]
-
-
 def _process_volume_config(data):
     return {"nocopy": data.get("volume_config", {}).get("nocopy", False)}
 
 
-def _process_ix_volume_config(data, ix_volumes):
-    path = ""
-    if not data.get("ix_volume_config", {}).get("dataset_name"):
-        utils.throw_error(
-            "Expected [ix_volume_config.dataset_name] to be set for [ix_volume] type"
-        )
+# Checkpoint
+
+
+def _get_host_path_from_host_path_config(host_path_config) -> str:
+    """
+    Constructs a top level volume object for a host_path type
+    """
+    config = ui_host_path_config.parse_obj(host_path_config)
+    if config.acl_enable:
+        assert isinstance(config.acl, ui_acl_entries)
+        return config.acl.path
+
+    assert isinstance(config.path, str)
+    return config.path
+
+
+def _get_host_path_from_ix_volume_config(ix_volume_config, ix_volumes) -> str:
+    """
+    Constructs a top level volume object for a ix_volume type
+    """
+    config = ui_ix_volume_config.parse_obj(ix_volume_config)
 
     if not ix_volumes:
         utils.throw_error("Expected [ix_volumes] to be set for [ix_volume] type")
 
-    ds = data["ix_volume_config"]["dataset_name"]
-    path = ix_volumes.get(ds, None)
+    path = ix_volumes.get(config.dataset_name, None)
     if not path:
-        utils.throw_error(f"Expected the key [{ds}] to be set in [ix_volumes]")
+        utils.throw_error(
+            f"Expected the key [{config.dataset_name}] to be set in [ix_volumes]"
+        )
 
     return path
 
 
-# Constructs a volume object for a cifs type
-def _process_cifs(data):
-    if not data.get("cifs_config"):
-        utils.throw_error("Expected [cifs_config] to be set for [cifs] type")
-
-    required_keys = ["server", "path", "username", "password"]
-    for key in required_keys:
-        if not data["cifs_config"].get(key):
-            utils.throw_error(f"Expected [{key}] to be set for [cifs] type")
+def _get_top_level_cifs_volume(cifs_config):
+    """
+    Constructs a top level volume object for a cifs type
+    """
+    config = ui_cifs_config.parse_obj(cifs_config)
 
     opts = [
-        f"user={data['cifs_config']['username']}",
-        f"password={data['cifs_config']['password']}",
+        f"user={config.username}",
+        f"password={config.password}",
     ]
-    if data["cifs_config"].get("domain"):
-        opts.append(f'domain={data["cifs_config"]["domain"]}')
+    if config.domain:
+        opts.append(f"domain={config.domain}")
 
-    if data["cifs_config"].get("options"):
-        if not isinstance(data["cifs_config"]["options"], list):
-            utils.throw_error(
-                "Expected [cifs_config.options] to be a list for [cifs] type"
-            )
-
+    if config.options:
         disallowed_opts = ["user", "password", "domain"]
-        for opt in data["cifs_config"]["options"]:
-            if not isinstance(opt, str):
-                utils.throw_error(
-                    "Expected [cifs_config.options] to be a list of strings for [cifs] type"
-                )
-
+        for opt in config.options:
             key = opt.split("=")[0]
             for disallowed in disallowed_opts:
                 if key == disallowed:
@@ -280,43 +276,25 @@ def _process_cifs(data):
 
             opts.append(opt)
 
-    server = data["cifs_config"]["server"].lstrip("/")
-    path = data["cifs_config"]["path"]
-    volume = {
+    return {
         "driver_opts": {
             "type": "cifs",
-            "device": f"//{server}/{path}",
+            "device": f"//{config.server.lstrip('/')}/{config.path}",
             "o": f"{','.join(opts)}",
         },
     }
 
-    return volume
 
+def _get_top_level_nfs_volume(nfs_config):
+    """
+    Constructs a top level volume object for a nfs type
+    """
+    config = ui_nfs_config.parse_obj(nfs_config)
 
-# Constructs a volume object for a nfs type
-def _process_nfs(data):
-    if not data.get("nfs_config"):
-        utils.throw_error("Expected [nfs_config] to be set for [nfs] type")
-
-    required_keys = ["server", "path"]
-    for key in required_keys:
-        if not data["nfs_config"].get(key):
-            utils.throw_error(f"Expected [{key}] to be set for [nfs] type")
-
-    opts = [f"addr={data['nfs_config']['server']}"]
-    if data["nfs_config"].get("options"):
-        if not isinstance(data["nfs_config"]["options"], list):
-            utils.throw_error(
-                "Expected [nfs_config.options] to be a list for [nfs] type"
-            )
-
+    opts = [f"addr={config.server}"]
+    if config.options:
         disallowed_opts = ["addr"]
-        for opt in data["nfs_config"]["options"]:
-            if not isinstance(opt, str):
-                utils.throw_error(
-                    "Expected [nfs_config.options] to be a list of strings for [nfs] type"
-                )
-
+        for opt in config.options:
             key = opt.split("=")[0]
             for disallowed in disallowed_opts:
                 if key == disallowed:
@@ -326,12 +304,10 @@ def _process_nfs(data):
 
             opts.append(opt)
 
-    volume = {
+    return {
         "driver_opts": {
             "type": "nfs",
-            "device": f":{data['nfs_config']['path']}",
+            "device": f":{config.path}",
             "o": f"{','.join(opts)}",
         },
     }
-
-    return volume
