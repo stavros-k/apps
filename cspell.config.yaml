@@ -20,6 +20,8 @@ words:
   - cooldown
   - cpus
   - cuda
+  - datasource
+  - datasources
   - ddns
   - ddnss
   - desec
@@ -138,6 +140,7 @@ words:
   - tailscale
   - tailscaled
   - tautulli
+  - templating
   - tensorchord
   - tmpfs
   - tracebacklimit
