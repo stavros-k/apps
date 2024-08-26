@@ -23,8 +23,3 @@ jobs:
         with:
           configurationFile: .github/renovate-config.js
           token: ${{ secrets.RENOVATE_TOKEN }}
-      
-      - name: debug
-        shell: bash
-        run: |
-          find / -name renovate.log -type f -exec cat {} \;
