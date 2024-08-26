@@ -34,7 +34,7 @@ module.exports = {
       matchDatasources: ["docker"],
       postUpgradeTasks: {
         // What to "git add" after the commands are run
-        fileFilters: ["**/app.yaml"],
+        fileFilters: ["**/app.yaml", "**/renovate.log"],
         executionMode: "branch",
         commands: [
           // See what we get. TODO: come back and add a script to bump app.yaml (and the app lib if any)
