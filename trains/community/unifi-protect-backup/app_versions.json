@@ -1,13 +1,13 @@
 {
-    "1.0.0": {
+    "1.0.4": {
         "healthy": true,
         "supported": true,
         "healthy_error": null,
-        "location": "/__w/apps/apps/trains/community/unifi-protect-backup/1.0.0",
-        "last_update": "2024-08-13 07:45:28",
+        "location": "/__w/apps/apps/trains/community/unifi-protect-backup/1.0.4",
+        "last_update": "2024-08-23 22:43:51",
         "required_features": [],
-        "human_version": "0.11.0_1.0.0",
-        "version": "1.0.0",
+        "human_version": "0.11.0_1.0.4",
+        "version": "1.0.4",
         "app_metadata": {
             "app_version": "0.11.0",
             "capabilities": [
@@ -40,7 +40,7 @@
                 "unifi-protect"
             ],
             "lib_version": "1.0.0",
-            "lib_version_hash": "909c14fa5586b5738632ff5ec8489eb26af143ecc601cf199df0b8b9e6d6a10c",
+            "lib_version_hash": "66ead85a4b23fec4388da34e481b2041aa26171deaa90b5229f112a7ec519f2b",
             "maintainers": [
                 {
                     "email": "dev@ixsystems.com",
@@ -65,7 +65,7 @@
             ],
             "title": "Unifi Protect Backup",
             "train": "community",
-            "version": "1.0.0"
+            "version": "1.0.4"
         },
         "schema": {
             "groups": [
@@ -850,7 +850,7 @@
                                                                 [
                                                                     "type",
                                                                     "=",
-                                                                    "smb"
+                                                                    "cifs"
                                                                 ]
                                                             ],
                                                             "attrs": [
@@ -952,7 +952,7 @@
                 }
             ]
         },
-        "readme": "<h1>Unifi Protect Backup</h1>\n<p><a href=\"https://github.com/ep1cman/unifi-protect-backup\">Unifi Protect Backup</a> is a python based tool for backing up UniFi Protect event clips as they occur.</p>",
+        "readme": "<h1>Unifi Protect Backup</h1> <p><a href=\"https://github.com/ep1cman/unifi-protect-backup\">Unifi Protect Backup</a> is a python based tool for backing up UniFi Protect event clips as they occur.</p>",
         "changelog": null
     }
 }

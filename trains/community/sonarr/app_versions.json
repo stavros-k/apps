@@ -1,13 +1,13 @@
 {
-    "1.0.3": {
+    "1.0.7": {
         "healthy": true,
         "supported": true,
         "healthy_error": null,
-        "location": "/__w/apps/apps/trains/community/sonarr/1.0.3",
-        "last_update": "2024-08-13 07:45:28",
+        "location": "/__w/apps/apps/trains/community/sonarr/1.0.7",
+        "last_update": "2024-08-23 22:43:51",
         "required_features": [],
-        "human_version": "4.0.5.1710_1.0.3",
-        "version": "1.0.3",
+        "human_version": "4.0.5.1710_1.0.7",
+        "version": "1.0.7",
         "app_metadata": {
             "app_version": "4.0.5.1710",
             "capabilities": [],
@@ -23,7 +23,7 @@
                 "series"
             ],
             "lib_version": "1.0.0",
-            "lib_version_hash": "909c14fa5586b5738632ff5ec8489eb26af143ecc601cf199df0b8b9e6d6a10c",
+            "lib_version_hash": "66ead85a4b23fec4388da34e481b2041aa26171deaa90b5229f112a7ec519f2b",
             "maintainers": [
                 {
                     "email": "dev@ixsystems.com",
@@ -52,7 +52,7 @@
             ],
             "title": "Sonarr",
             "train": "community",
-            "version": "1.0.3"
+            "version": "1.0.7"
         },
         "schema": {
             "groups": [
@@ -535,7 +535,7 @@
                                                                 [
                                                                     "type",
                                                                     "=",
-                                                                    "smb"
+                                                                    "cifs"
                                                                 ]
                                                             ],
                                                             "attrs": [
@@ -637,7 +637,7 @@
                 }
             ]
         },
-        "readme": "<h1>Sonarr</h1>\n<p><a href=\"https://github.com/Sonarr/Sonarr\">Sonarr</a> is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them.</p>",
+        "readme": "<h1>Sonarr</h1> <p><a href=\"https://github.com/Sonarr/Sonarr\">Sonarr</a> is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them.</p>",
         "changelog": null
     }
 }

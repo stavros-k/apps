@@ -1,0 +1,713 @@
+{
+    "1.0.1": {
+        "healthy": true,
+        "supported": true,
+        "healthy_error": null,
+        "location": "/__w/apps/apps/trains/community/jenkins/1.0.1",
+        "last_update": "2024-08-23 22:43:51",
+        "required_features": [],
+        "human_version": "2.462.1_1.0.1",
+        "version": "1.0.1",
+        "app_metadata": {
+            "app_version": "2.462.1",
+            "capabilities": [],
+            "categories": [
+                "productivity"
+            ],
+            "description": "Jenkins is a leading open source automation server,",
+            "home": "https://www.jenkins.io/",
+            "host_mounts": [],
+            "icon": "https://media.sys.truenas.net/apps/jenkins/icons/icon.svg",
+            "keywords": [
+                "automation",
+                "ci/cd"
+            ],
+            "lib_version": "1.0.0",
+            "lib_version_hash": "66ead85a4b23fec4388da34e481b2041aa26171deaa90b5229f112a7ec519f2b",
+            "maintainers": [
+                {
+                    "email": "dev@ixsystems.com",
+                    "name": "truenas",
+                    "url": "https://www.truenas.com/"
+                }
+            ],
+            "name": "jenkins",
+            "run_as_context": [
+                {
+                    "description": "Jenkins runs as any non-root user.",
+                    "gid": 1000,
+                    "group_name": "jenkins",
+                    "uid": 1000,
+                    "user_name": "jenkins"
+                }
+            ],
+            "screenshots": [
+                "https://media.sys.truenas.net/apps/jenkins/screenshots/screenshot1.png",
+                "https://media.sys.truenas.net/apps/jenkins/screenshots/screenshot2.png"
+            ],
+            "sources": [
+                "https://hub.docker.com/r/jenkins/jenkins",
+                "https://github.com/jenkinsci/jenkins",
+                "https://www.jenkins.io/"
+            ],
+            "title": "Jenkins",
+            "train": "community",
+            "version": "1.0.1"
+        },
+        "schema": {
+            "groups": [
+                {
+                    "name": "Jenkins Configuration",
+                    "description": "Configure Jenkins"
+                },
+                {
+                    "name": "User and Group Configuration",
+                    "description": "Configure User and Group for Jenkins"
+                },
+                {
+                    "name": "Network Configuration",
+                    "description": "Configure Network for Jenkins"
+                },
+                {
+                    "name": "Storage Configuration",
+                    "description": "Configure Storage for Jenkins"
+                },
+                {
+                    "name": "Resources Configuration",
+                    "description": "Configure Resources for Jenkins"
+                }
+            ],
+            "questions": [
+                {
+                    "variable": "TZ",
+                    "group": "Jenkins Configuration",
+                    "label": "Timezone",
+                    "schema": {
+                        "type": "string",
+                        "default": "Etc/UTC",
+                        "required": true,
+                        "$ref": [
+                            "definitions/timezone"
+                        ]
+                    }
+                },
+                {
+                    "variable": "jenkins",
+                    "label": "",
+                    "group": "Jenkins Configuration",
+                    "schema": {
+                        "type": "dict",
+                        "attrs": [
+                            {
+                                "variable": "additional_java_opts",
+                                "label": "Additional Jenkins Java Options",
+                                "description": "Configure additional jenkins java options for Jenkins.</br>\nSee https://www.jenkins.io/doc/book/managing/system-properties\n",
+                                "schema": {
+                                    "type": "list",
+                                    "default": [],
+                                    "items": [
+                                        {
+                                            "variable": "jenkinsJavaOpt",
+                                            "label": "Jenkins Java Option",
+                                            "schema": {
+                                                "type": "dict",
+                                                "attrs": [
+                                                    {
+                                                        "variable": "property",
+                                                        "label": "Property",
+                                                        "description": "The property to set, see https://www.jenkins.io/doc/book/managing/system-properties </br>\nThe prefix [-D] is automatically added.\n",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "value",
+                                                        "description": "The value to set for the property.</br>\n",
+                                                        "label": "Value",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "additional_opts",
+                                "label": "Additional Jenkins Options",
+                                "description": "Configure additional jenkins options for Jenkins. </br>\nsee https://www.jenkins.io/doc/book/installing/initial-settings\n",
+                                "schema": {
+                                    "type": "list",
+                                    "default": [],
+                                    "items": [
+                                        {
+                                            "variable": "jenkinsOption",
+                                            "label": "Jenkins Option",
+                                            "description": "The option to set, see https://www.jenkins.io/doc/book/installing/initial-settings </br>\nThe prefix [--] is automatically added.\n",
+                                            "schema": {
+                                                "type": "string",
+                                                "required": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "additional_envs",
+                                "label": "Additional Environment Variables",
+                                "description": "Configure additional environment variables for Jenkins.",
+                                "schema": {
+                                    "type": "list",
+                                    "default": [],
+                                    "items": [
+                                        {
+                                            "variable": "env",
+                                            "label": "Environment Variable",
+                                            "schema": {
+                                                "type": "dict",
+                                                "attrs": [
+                                                    {
+                                                        "variable": "name",
+                                                        "label": "Name",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "value",
+                                                        "label": "Value",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "variable": "network",
+                    "label": "",
+                    "group": "Network Configuration",
+                    "schema": {
+                        "type": "dict",
+                        "attrs": [
+                            {
+                                "variable": "web_port",
+                                "label": "WebUI Port",
+                                "description": "The port for Jenkins WebUI",
+                                "schema": {
+                                    "type": "int",
+                                    "default": 30025,
+                                    "required": true,
+                                    "$ref": [
+                                        "definitions/port"
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "enable_agent",
+                                "label": "Enable Agent Port",
+                                "description": "Enable the agent port for Jenkins.",
+                                "schema": {
+                                    "type": "boolean",
+                                    "default": false
+                                }
+                            },
+                            {
+                                "variable": "agent_port",
+                                "label": "Agent Port",
+                                "description": "The port for Jenkins Agent",
+                                "schema": {
+                                    "type": "int",
+                                    "default": 50000,
+                                    "show_if": [
+                                        [
+                                            "agent",
+                                            "=",
+                                            true
+                                        ]
+                                    ],
+                                    "required": true,
+                                    "$ref": [
+                                        "definitions/port"
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "certificate_id",
+                                "label": "Certificate ID",
+                                "description": "The certificate ID to use for Jenkins.",
+                                "schema": {
+                                    "type": "int",
+                                    "null": true,
+                                    "$ref": [
+                                        "definitions/certificate"
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "host_network",
+                                "label": "Host Network",
+                                "description": "Bind to the host network. It's recommended to keep this disabled.\n",
+                                "schema": {
+                                    "type": "boolean",
+                                    "default": false
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "variable": "storage",
+                    "label": "",
+                    "group": "Storage Configuration",
+                    "schema": {
+                        "type": "dict",
+                        "attrs": [
+                            {
+                                "variable": "home",
+                                "label": "Jenkins Home Storage",
+                                "description": "The path to store Jenkins Home.",
+                                "schema": {
+                                    "type": "dict",
+                                    "attrs": [
+                                        {
+                                            "variable": "type",
+                                            "label": "Type",
+                                            "description": "ixVolume: Is dataset created automatically by the system.</br>\nHost Path: Is a path that already exists on the system.\n",
+                                            "schema": {
+                                                "type": "string",
+                                                "required": true,
+                                                "immutable": true,
+                                                "default": "ix_volume",
+                                                "enum": [
+                                                    {
+                                                        "value": "host_path",
+                                                        "description": "Host Path (Path that already exists on the system)"
+                                                    },
+                                                    {
+                                                        "value": "ix_volume",
+                                                        "description": "ixVolume (Dataset created automatically by the system)"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "variable": "ix_volume_config",
+                                            "label": "ixVolume Configuration",
+                                            "description": "The configuration for the ixVolume dataset.",
+                                            "schema": {
+                                                "type": "dict",
+                                                "show_if": [
+                                                    [
+                                                        "type",
+                                                        "=",
+                                                        "ix_volume"
+                                                    ]
+                                                ],
+                                                "$ref": [
+                                                    "normalize/ix_volume"
+                                                ],
+                                                "attrs": [
+                                                    {
+                                                        "variable": "acl_enable",
+                                                        "label": "Enable ACL",
+                                                        "description": "Enable ACL for the storage.",
+                                                        "schema": {
+                                                            "type": "boolean",
+                                                            "default": false
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "dataset_name",
+                                                        "label": "Dataset Name",
+                                                        "description": "The name of the dataset to use for storage.",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true,
+                                                            "immutable": true,
+                                                            "hidden": true,
+                                                            "default": "home"
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "acl_entries",
+                                                        "label": "ACL Configuration",
+                                                        "schema": {
+                                                            "type": "dict",
+                                                            "show_if": [
+                                                                [
+                                                                    "acl_enable",
+                                                                    "=",
+                                                                    true
+                                                                ]
+                                                            ],
+                                                            "attrs": []
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "variable": "host_path_config",
+                                            "label": "Host Path Configuration",
+                                            "schema": {
+                                                "type": "dict",
+                                                "show_if": [
+                                                    [
+                                                        "type",
+                                                        "=",
+                                                        "host_path"
+                                                    ]
+                                                ],
+                                                "attrs": [
+                                                    {
+                                                        "variable": "acl_enable",
+                                                        "label": "Enable ACL",
+                                                        "description": "Enable ACL for the storage.",
+                                                        "schema": {
+                                                            "type": "boolean",
+                                                            "default": false
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "acl",
+                                                        "label": "ACL Configuration",
+                                                        "schema": {
+                                                            "type": "dict",
+                                                            "show_if": [
+                                                                [
+                                                                    "acl_enable",
+                                                                    "=",
+                                                                    true
+                                                                ]
+                                                            ],
+                                                            "attrs": [],
+                                                            "$ref": [
+                                                                "normalize/acl"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "path",
+                                                        "label": "Host Path",
+                                                        "description": "The host path to use for storage.",
+                                                        "schema": {
+                                                            "type": "hostpath",
+                                                            "show_if": [
+                                                                [
+                                                                    "acl_enable",
+                                                                    "=",
+                                                                    false
+                                                                ]
+                                                            ],
+                                                            "required": true
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "additional_storage",
+                                "label": "Additional Storage",
+                                "description": "Additional storage for Jenkins.",
+                                "schema": {
+                                    "type": "list",
+                                    "default": [],
+                                    "items": [
+                                        {
+                                            "variable": "storageEntry",
+                                            "label": "Storage Entry",
+                                            "schema": {
+                                                "type": "dict",
+                                                "attrs": [
+                                                    {
+                                                        "variable": "type",
+                                                        "label": "Type",
+                                                        "description": "ixVolume: Is dataset created automatically by the system.</br>\nHost Path: Is a path that already exists on the system.</br>\nSMB Share: Is a SMB share that is mounted to a persistent volume claim.\n",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true,
+                                                            "default": "ixVolume",
+                                                            "immutable": true,
+                                                            "enum": [
+                                                                {
+                                                                    "value": "host_path",
+                                                                    "description": "Host Path (Path that already exists on the system)"
+                                                                },
+                                                                {
+                                                                    "value": "ix_volume",
+                                                                    "description": "ixVolume (Dataset created automatically by the system)"
+                                                                },
+                                                                {
+                                                                    "value": "cifs",
+                                                                    "description": "SMB/CIFS Share (Mounts a persistent volume claim to a SMB share)"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "read_only",
+                                                        "label": "Read Only",
+                                                        "description": "Mount the volume as read only.",
+                                                        "schema": {
+                                                            "type": "boolean",
+                                                            "default": false
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "mount_path",
+                                                        "label": "Mount Path",
+                                                        "description": "The path inside the container to mount the storage.",
+                                                        "schema": {
+                                                            "type": "path",
+                                                            "required": true
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "host_path_config",
+                                                        "label": "Host Path Configuration",
+                                                        "schema": {
+                                                            "type": "dict",
+                                                            "show_if": [
+                                                                [
+                                                                    "type",
+                                                                    "=",
+                                                                    "host_path"
+                                                                ]
+                                                            ],
+                                                            "attrs": [
+                                                                {
+                                                                    "variable": "acl_enable",
+                                                                    "label": "Enable ACL",
+                                                                    "description": "Enable ACL for the storage.",
+                                                                    "schema": {
+                                                                        "type": "boolean",
+                                                                        "default": false
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "acl",
+                                                                    "label": "ACL Configuration",
+                                                                    "schema": {
+                                                                        "type": "dict",
+                                                                        "show_if": [
+                                                                            [
+                                                                                "acl_enable",
+                                                                                "=",
+                                                                                true
+                                                                            ]
+                                                                        ],
+                                                                        "attrs": [],
+                                                                        "$ref": [
+                                                                            "normalize/acl"
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "path",
+                                                                    "label": "Host Path",
+                                                                    "description": "The host path to use for storage.",
+                                                                    "schema": {
+                                                                        "type": "hostpath",
+                                                                        "show_if": [
+                                                                            [
+                                                                                "acl_enable",
+                                                                                "=",
+                                                                                false
+                                                                            ]
+                                                                        ],
+                                                                        "required": true
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "ix_volume_config",
+                                                        "label": "ixVolume Configuration",
+                                                        "description": "The configuration for the ixVolume dataset.",
+                                                        "schema": {
+                                                            "type": "dict",
+                                                            "show_if": [
+                                                                [
+                                                                    "type",
+                                                                    "=",
+                                                                    "ix_volume"
+                                                                ]
+                                                            ],
+                                                            "$ref": [
+                                                                "normalize/ix_volume"
+                                                            ],
+                                                            "attrs": [
+                                                                {
+                                                                    "variable": "acl_enable",
+                                                                    "label": "Enable ACL",
+                                                                    "description": "Enable ACL for the storage.",
+                                                                    "schema": {
+                                                                        "type": "boolean",
+                                                                        "default": false
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "dataset_name",
+                                                                    "label": "Dataset Name",
+                                                                    "description": "The name of the dataset to use for storage.",
+                                                                    "schema": {
+                                                                        "type": "string",
+                                                                        "required": true,
+                                                                        "immutable": true,
+                                                                        "default": "storage_entry"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "acl_entries",
+                                                                    "label": "ACL Configuration",
+                                                                    "schema": {
+                                                                        "type": "dict",
+                                                                        "show_if": [
+                                                                            [
+                                                                                "acl_enable",
+                                                                                "=",
+                                                                                true
+                                                                            ]
+                                                                        ],
+                                                                        "attrs": [],
+                                                                        "$ref": [
+                                                                            "normalize/acl"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "cifs_config",
+                                                        "label": "SMB Configuration",
+                                                        "description": "The configuration for the SMB dataset.",
+                                                        "schema": {
+                                                            "type": "dict",
+                                                            "show_if": [
+                                                                [
+                                                                    "type",
+                                                                    "=",
+                                                                    "cifs"
+                                                                ]
+                                                            ],
+                                                            "attrs": [
+                                                                {
+                                                                    "variable": "server",
+                                                                    "label": "Server",
+                                                                    "description": "The server to mount the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string",
+                                                                        "required": true
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "path",
+                                                                    "label": "Path",
+                                                                    "description": "The path to mount the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string",
+                                                                        "required": true
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "username",
+                                                                    "label": "Username",
+                                                                    "description": "The username to use for the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string",
+                                                                        "required": true
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "password",
+                                                                    "label": "Password",
+                                                                    "description": "The password to use for the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string",
+                                                                        "required": true,
+                                                                        "private": true
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "domain",
+                                                                    "label": "Domain",
+                                                                    "description": "The domain to use for the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "variable": "resources",
+                    "label": "",
+                    "group": "Resources Configuration",
+                    "schema": {
+                        "type": "dict",
+                        "attrs": [
+                            {
+                                "variable": "limits",
+                                "label": "Limits",
+                                "schema": {
+                                    "type": "dict",
+                                    "attrs": [
+                                        {
+                                            "variable": "cpus",
+                                            "label": "CPUs",
+                                            "description": "CPUs limit for Jenkins.",
+                                            "schema": {
+                                                "type": "int",
+                                                "default": 2,
+                                                "required": true
+                                            }
+                                        },
+                                        {
+                                            "variable": "memory",
+                                            "label": "Memory (in MB)",
+                                            "description": "Memory limit for Jenkins.",
+                                            "schema": {
+                                                "type": "int",
+                                                "default": 4096,
+                                                "required": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "readme": "<h1>Jenkins</h1> <p><a href=\"https://www.jenkins.io/\">Jenkins</a>. The leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project.</p>",
+        "changelog": null
+    }
+}

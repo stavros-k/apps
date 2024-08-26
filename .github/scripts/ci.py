@@ -10,6 +10,7 @@ import sys
 import os
 
 CONTAINER_IMAGE = "ghcr.io/truenas/apps_validation:latest"
+PLATFORM = "linux/amd64"
 
 
 # Used to print mostly structured data, like yaml or json
@@ -54,6 +55,13 @@ def parse_args():
         type=bool,
         help="Prints the rendered docker-compose file even if it's not a valid yaml",
     )
+    parser.add_argument(
+        "--wait",
+        required=False,
+        default=False,
+        type=bool,
+        help="Wait for user input before stopping the app",
+    )
     parsed = parser.parse_args()
 
     return {
@@ -63,6 +71,7 @@ def parse_args():
         "render_only": parsed.render_only,
         "render_only_debug": parsed.render_only_debug,
         "project": secrets.token_hex(16),
+        "wait": parsed.wait,
     }
 
 
@@ -74,6 +83,7 @@ def print_info():
     print_stderr(f"  - test-file: [{args['test_file']}]")
     print_stderr(f"  - render-only: [{args['render_only']}]")
     print_stderr(f"  - render-only-debug: [{args['render_only_debug']}]")
+    print_stderr(f"  - wait: [{args['wait']}]")
 
 
 def command_exists(command):
@@ -101,7 +111,9 @@ def get_base_cmd():
 def pull_app_catalog_container():
     print_stderr(f"Pulling container image [{CONTAINER_IMAGE}]")
     res = subprocess.run(
-        f"docker pull --quiet {CONTAINER_IMAGE}", shell=True, capture_output=True
+        f"docker pull --platform {PLATFORM} --quiet {CONTAINER_IMAGE}",
+        shell=True,
+        capture_output=True,
     )
     if res.returncode != 0:
         print_stderr(f"Failed to pull container image [{CONTAINER_IMAGE}]")
@@ -115,7 +127,7 @@ def render_compose():
     app_dir = f"ix-dev/{args['train']}/{args['app']}"
     cmd = " ".join(
         [
-            f"docker run --quiet --rm -v {os.getcwd()}:/workspace {CONTAINER_IMAGE}",
+            f"docker run --platform {PLATFORM} --quiet --rm -v {os.getcwd()}:/workspace {CONTAINER_IMAGE}",
             "apps_render_app render",
             f"--path /workspace/{app_dir}",
             f"--values /workspace/{app_dir}/{test_values_dir}/{args['test_file']}",
@@ -135,9 +147,7 @@ def render_compose():
         except yaml.YAMLError as e:
             print_stderr(f"Failed to parse rendered docker-compose file [{e}]")
             with open(f"{app_dir}/templates/rendered/docker-compose.yaml", "r") as f:
-                print_stderr(
-                    f"Syntax Error in rendered docker-compose file:\n{f.read()}"
-                )
+                print_stderr(f"Syntax Error in rendered docker-compose file:\n{f.read()}")
             sys.exit(1)
 
         if args["render_only_debug"]:
@@ -146,6 +156,16 @@ def render_compose():
             sys.exit(0)
 
     print_stderr("Done rendering docker-compose file")
+
+
+def update_x_portals(parsed_compose):
+    portals = parsed_compose.get("x-portals", [])
+    for portal in portals:
+        scheme = portal.get("scheme", "http")
+        host = portal.get("host", "localhost").replace("0.0.0.0", "localhost")
+        port = str(portal.get("port", "80" if scheme == "http" else "443"))
+        url = scheme + "://" + host + ":" + port + portal.get("path", "")
+        x_portals.append(f"[{portal['name']}] - {url}")
 
 
 def print_docker_compose_config():
@@ -166,6 +186,9 @@ def print_docker_compose_config():
     if args["render_only"]:
         print_stdout(res.stdout.decode("utf-8"))
         sys.exit(0)
+
+    data = yaml.safe_load(res.stdout.decode("utf-8"))
+    update_x_portals(data)
 
     print_stderr(res.stdout.decode("utf-8"))
 
@@ -212,7 +235,7 @@ def print_docker_processes():
     separator_end()
 
 
-def get_failed_containers():
+def get_parsed_containers():
     # Outputs one container per line, in json format
     cmd = f"{get_base_cmd()} ps --all --format json"
     print_cmd(cmd)
@@ -228,23 +251,82 @@ def get_failed_containers():
         except json.JSONDecodeError:
             print_stderr(f"Failed to parse container status output:\n {line}")
             sys.exit(1)
+    return parsed_containers
+
+
+def status_indicates_healthcheck_existence(container):
+    """Assumes healthcheck exists if status contains "health" """
+    # eg "health: starting". This happens right after a container is started or restarted
+    return "(health: starting)" in container.get("Status", "")
+
+
+def state_indicates_restarting(container):
+    """Assumes restarting if state is "restarting" """
+    return container.get("State", "") == "restarting"
+
+
+def exit_code_indicates_normal_exit(container):
+    """Assumes normal exit if there is no exit code or if it is 0"""
+    return container.get("ExitCode", 0) == 0
+
+
+def health_indicates_healthy(container):
+    """Assumes healthy if there is no health status or if it is "healthy" """
+    health = container.get("Health", "")
+    if health in ["healthy", ""]:
+        return True
+    return False
+
+
+def is_considered_healthy(container):
+    message = [
+        f"✅ Healthy container skipped [{container['Name']}({container['ID']})] with status [{container.get('State')}]"
+        + " for the following reasons:"
+    ]
+    reasons = []
+
+    if health_indicates_healthy(container):
+        reasons.append("\t- Container is healthy")
+
+    if exit_code_indicates_normal_exit(container):
+        reasons.append(f"\t- Exit code is [{container.get('ExitCode', 0)}]")
+
+    if not state_indicates_restarting(container):
+        reasons.append("\t- Container is not restarting")
+
+    if not status_indicates_healthcheck_existence(container):
+        reasons.append("\t- Status does not indicate a healthcheck exists")
+
+    # Mark it as healthy if ALL of the following are true:
+    # 1. It is healthy
+    # 2. Its exit code is normal
+    # 3. Its not restarting
+    # 4. It does not indicate a healthcheck exists
+
+    # For #4, there was some cases where the container was restarting and at the time of check,
+    # the "Health" was empty and "State" was "running" (similar to init containers). This check
+    # added to try to catch those cases, by inspecting the "Status" field which if there is a healthcheck
+    # it will contain the word "health".
+    result = (
+        health_indicates_healthy(container)
+        and exit_code_indicates_normal_exit(container)
+        and not state_indicates_restarting(container)
+        and not status_indicates_healthcheck_existence(container)
+    )
+
+    return {"result": result, "reasons": "\n".join(message + reasons)}
+
+
+def get_failed_containers():
+    parsed_containers = get_parsed_containers()
 
     failed = []
     for container in parsed_containers:
         # Skip containers that are exited with 0 (eg init containers),
         # but not restarting (during a restart exit code is 0)
-        if (
-            (
-                container.get("Health", "") == ""
-                or container.get("Health", "") == "healthy"
-            )
-            and container.get("ExitCode", 0) == 0
-            and (not container.get("State", "") == "restarting")
-        ):
-            print_stderr(
-                f"Skipping container [{container['Name']}({container['ID']})] with status [{container.get('State')}]"
-                + " because it exited with 0 and has no health status"
-            )
+        is_healthy = is_considered_healthy(container)
+        if is_healthy["result"]:
+            print_stderr(is_healthy["reasons"])
             continue
         failed.append(container)
 
@@ -275,10 +357,26 @@ def run_app():
 
     print_stderr(f"Exit code: {res.returncode}")
     if res.returncode != 0:
+        parsed_containers = get_parsed_containers()
+        if not parsed_containers:
+            print_stderr(
+                "Docker exited with non-zero code and no containers were found.\n"
+                + "Most likely docker couldn't start the containers at all.\n"
+            )
+            sys.exit(1)
+
         failed_containers = get_failed_containers()
-        print_stderr(f"Found [{len(failed_containers)}] failed containers")
-        if failed_containers:
-            print_stderr("Failed to start container(s):")
+        failed_containers_names = "\n".join(
+            [f"\t-{c['Name']} ({c['ID']})" for c in failed_containers]
+        )
+        if not failed_containers:
+            print_stderr("✅ No failed containers found")
+
+        else:
+            print_stderr(
+                f"❌ Found [{len(failed_containers)}]"
+                + f"failed containers that failed to start:\n {failed_containers_names}"
+            )
         for container in failed_containers:
             print_stderr(
                 f"Container [{container['Name']}({container['ID']})] exited. Printing Inspect Data"
@@ -307,7 +405,7 @@ def check_app_dir_exists():
 def copy_lib():
     cmd = " ".join(
         [
-            f"docker run --quiet --rm -v {os.getcwd()}:/workspace {CONTAINER_IMAGE}",
+            f"docker run --platform {PLATFORM} --quiet --rm -v {os.getcwd()}:/workspace {CONTAINER_IMAGE}",
             "apps_catalog_hash_generate --path /workspace",
         ]
     )
@@ -341,9 +439,7 @@ def copy_macros():
 
 def copy_migration_helpers():
     if not os.path.exists("migration_helpers"):
-        print_stderr(
-            "Migration helpers directory does not exist. Skipping helpers copy"
-        )
+        print_stderr("Migration helpers directory does not exist. Skipping helpers copy")
         return
 
     print_stderr("Copying migration helpers")
@@ -376,6 +472,14 @@ def generate_item_file():
         yaml.dump(item_data, f)
 
 
+def wait_for_user_input():
+    print_stderr("Press enter to stop the app")
+    try:
+        input()
+    except KeyboardInterrupt:
+        pass
+
+
 def main():
     print_info()
     check_app_dir_exists()
@@ -388,6 +492,13 @@ def main():
     render_compose()
     print_docker_compose_config()
     res = run_app()
+    if args["wait"]:
+        if not x_portals:
+            print_stderr("No portals found")
+        else:
+            print_stderr("\nPortals:")
+            print_stderr("\n".join(x_portals) + "\n")
+        wait_for_user_input()
     docker_cleanup()
 
     if res == 0:
@@ -399,6 +510,7 @@ def main():
 
 
 args = parse_args()
+x_portals = []
 
 if __name__ == "__main__":
     main()

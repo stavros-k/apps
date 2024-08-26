@@ -10,6 +10,7 @@ words:
   - bitnami
   - briefkasten
   - bwlimit
+  - castopod
   - changeip
   - cifs
   - clamav
@@ -19,6 +20,7 @@ words:
   - consts
   - cooldown
   - cpus
+  - creds
   - cuda
   - datasource
   - datasources
@@ -39,16 +41,22 @@ words:
   - easydns
   - emby
   - filebrowser
+  - fireflyiii
   - fowner
   - freedns
   - freshclamd
+  - freshrss
   - fscrawler
   - gandi
   - gdrive
+  - gitea
   - godaddy
   - goip
   - goipde
   - graalvm
+  - harverster
+  - healthcheck
+  - healthchecks
   - hetzner
   - hexparrot
   - homarr
@@ -60,6 +68,7 @@ words:
   - inwx
   - ionos
   - ipaddr
+  - ipam
   - ipfs
   - ipify
   - ipinfo
@@ -68,13 +77,16 @@ words:
   - itzg
   - jellyfin
   - jellyseerr
+  - jenkins
   - kapowarr
   - kavita
   - keepalive
+  - keyfile
   - komga
   - libsmbclient
   - lidarr
-  - logsearch
+  - linkding
+  - listmonk
   - logseq
   - luadns
   - mangas
@@ -98,6 +110,7 @@ words:
   - nocopy
   - noip
   - nowdns
+  - odoo
   - omada
   - opendns
   - openj
@@ -105,10 +118,15 @@ words:
   - organizr
   - overseerr
   - palworld
+  - passbolt
   - pecl
+  - pgadmin
   - pgvecto
   - photoprism
+  - pigallery
   - pihole
+  - piwigo
+  - planka
   - plexinc
   - plexpass
   - porkbun
@@ -118,19 +136,32 @@ words:
   - publicip
   - publicipv
   - qbittorrent
+  - quic
   - radarr
   - rcat
   - rclone
   - rcon
   - readarr
+  - recyclarr
+  - roundcube
+  - rprivate
+  - rshared
+  - rslave
+  - rsyncd
+  - sabnzbd
   - scandir
+  - searxng
   - seeip
   - selfhost
   - selfhost.de
   - selfhostde
   - servercow
+  - setgid
+  - setuid
+  - sftpgo
   - shoutrrr
   - sigdb
+  - signup
   - smbclient
   - sonarr
   - spdyn
@@ -141,15 +172,22 @@ words:
   - tailscaled
   - tautulli
   - templating
+  - tdarr
   - tensorchord
+  - tftpd
   - tmpfs
   - tracebacklimit
   - truenas
+  - twofactor
   - unifi
   - userspace
   - variomedia
+  - vaultwarden
+  - vikunja
+  - webdav
   - whiteboarding
   - whoogle
   - wtfismyip
+  - xattr
   - zerotier
   - zoneedit

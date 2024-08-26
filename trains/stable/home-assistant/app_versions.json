@@ -1,13 +1,13 @@
 {
-    "1.0.0": {
+    "1.0.4": {
         "healthy": true,
         "supported": true,
         "healthy_error": null,
-        "location": "/__w/apps/apps/trains/stable/home-assistant/1.0.0",
-        "last_update": "2024-08-13 07:46:48",
+        "location": "/__w/apps/apps/trains/stable/home-assistant/1.0.4",
+        "last_update": "2024-08-23 22:43:51",
         "required_features": [],
-        "human_version": "2024.8.1_1.0.0",
-        "version": "1.0.0",
+        "human_version": "2024.8.1_1.0.4",
+        "version": "1.0.4",
         "app_metadata": {
             "app_version": "2024.8.1",
             "capabilities": [
@@ -44,7 +44,7 @@
                 "assistant"
             ],
             "lib_version": "1.0.0",
-            "lib_version_hash": "317726af1e56541666942aeebcc7543e6f0946f96c322d35b612c0f2f7189a88",
+            "lib_version_hash": "66ead85a4b23fec4388da34e481b2041aa26171deaa90b5229f112a7ec519f2b",
             "maintainers": [
                 {
                     "email": "dev@ixsystems.com",
@@ -78,7 +78,7 @@
             ],
             "title": "Home Assistant",
             "train": "stable",
-            "version": "1.0.0"
+            "version": "1.0.4"
         },
         "schema": {
             "groups": [
@@ -907,7 +907,7 @@
                                                                 [
                                                                     "type",
                                                                     "=",
-                                                                    "smb"
+                                                                    "cifs"
                                                                 ]
                                                             ],
                                                             "attrs": [
@@ -1009,7 +1009,7 @@
                 }
             ]
         },
-        "readme": "<h1>Home Assistant</h1>\n<p><a href=\"https://www.home-assistant.io/\">Home Assistant</a> is an open source home automation that puts local control and privacy first.</p>",
+        "readme": "<h1>Home Assistant</h1> <p><a href=\"https://www.home-assistant.io/\">Home Assistant</a> is an open source home automation that puts local control and privacy first.</p>",
         "changelog": null
     }
 }

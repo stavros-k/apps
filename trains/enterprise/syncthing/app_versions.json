@@ -1,0 +1,680 @@
+{
+    "1.0.3": {
+        "healthy": true,
+        "supported": true,
+        "healthy_error": null,
+        "location": "/__w/apps/apps/trains/enterprise/syncthing/1.0.3",
+        "last_update": "2024-08-23 22:43:51",
+        "required_features": [],
+        "human_version": "1.27.6_1.0.3",
+        "version": "1.0.3",
+        "app_metadata": {
+            "app_version": "1.27.6",
+            "capabilities": [
+                {
+                    "description": "Syncthing is able to chown files.",
+                    "name": "CHOWN"
+                },
+                {
+                    "description": "Syncthing is able to bypass permission checks.",
+                    "name": "DAC_OVERRIDE"
+                },
+                {
+                    "description": "Syncthing is able bypass permission checks for it's sub-processes.",
+                    "name": "FOWNER"
+                },
+                {
+                    "description": "Syncthing is able to set user ID for it's sub-processes.",
+                    "name": "SETUID"
+                },
+                {
+                    "description": "Syncthing is able to set group ID for it's sub-processes.",
+                    "name": "SETGID"
+                },
+                {
+                    "description": "Syncthing is able to set process capabilities.",
+                    "name": "SETPCAP"
+                },
+                {
+                    "description": "Syncthing is able to set file capabilities.",
+                    "name": "SETFCAP"
+                },
+                {
+                    "description": "Syncthing is able to perform various system administration operations.",
+                    "name": "SYS_ADMIN"
+                }
+            ],
+            "categories": [
+                "storage"
+            ],
+            "description": "Syncthing is a continuous file synchronization program.",
+            "home": "https://syncthing.net",
+            "host_mounts": [],
+            "icon": "https://media.sys.truenas.net/apps/syncthing/icons/icon.svg",
+            "keywords": [
+                "sync",
+                "file-sharing"
+            ],
+            "lib_version": "1.0.0",
+            "lib_version_hash": "66ead85a4b23fec4388da34e481b2041aa26171deaa90b5229f112a7ec519f2b",
+            "maintainers": [
+                {
+                    "email": "dev@ixsystems.com",
+                    "name": "truenas",
+                    "url": "https://www.truenas.com/"
+                }
+            ],
+            "name": "syncthing",
+            "run_as_context": [
+                {
+                    "description": "Syncthing runs as root user.",
+                    "gid": 0,
+                    "group_name": "root",
+                    "uid": 0,
+                    "user_name": "root"
+                }
+            ],
+            "screenshots": [
+                "https://media.sys.truenas.net/apps/syncthing/screenshots/screenshot1.png",
+                "https://media.sys.truenas.net/apps/syncthing/screenshots/screenshot2.png",
+                "https://media.sys.truenas.net/apps/syncthing/screenshots/screenshot3.png",
+                "https://media.sys.truenas.net/apps/syncthing/screenshots/screenshot4.png"
+            ],
+            "sources": [
+                "https://syncthing.net/",
+                "https://github.com/syncthing/syncthing",
+                "https://hub.docker.com/r/syncthing/syncthing"
+            ],
+            "title": "Syncthing",
+            "train": "enterprise",
+            "version": "1.0.3"
+        },
+        "schema": {
+            "groups": [
+                {
+                    "name": "Syncthing Configuration",
+                    "description": "Configure Syncthing"
+                },
+                {
+                    "name": "User and Group Configuration",
+                    "description": "Configure User and Group for Syncthing"
+                },
+                {
+                    "name": "Network Configuration",
+                    "description": "Configure Network for Syncthing"
+                },
+                {
+                    "name": "Storage Configuration",
+                    "description": "Configure Storage for Syncthing"
+                },
+                {
+                    "name": "Resources Configuration",
+                    "description": "Configure Resources for Syncthing"
+                }
+            ],
+            "questions": [
+                {
+                    "variable": "TZ",
+                    "group": "Syncthing Configuration",
+                    "label": "Timezone",
+                    "schema": {
+                        "type": "string",
+                        "default": "Etc/UTC",
+                        "required": true,
+                        "$ref": [
+                            "definitions/timezone"
+                        ]
+                    }
+                },
+                {
+                    "variable": "syncthing",
+                    "label": "",
+                    "group": "Syncthing Configuration",
+                    "schema": {
+                        "type": "dict",
+                        "attrs": [
+                            {
+                                "variable": "additional_envs",
+                                "label": "Additional Environment Variables",
+                                "description": "Configure additional environment variables for Syncthing.",
+                                "schema": {
+                                    "type": "list",
+                                    "default": [],
+                                    "items": [
+                                        {
+                                            "variable": "env",
+                                            "label": "Environment Variable",
+                                            "schema": {
+                                                "type": "dict",
+                                                "attrs": [
+                                                    {
+                                                        "variable": "name",
+                                                        "label": "Name",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "value",
+                                                        "label": "Value",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "variable": "run_as",
+                    "label": "",
+                    "group": "User and Group Configuration",
+                    "schema": {
+                        "type": "dict",
+                        "attrs": [
+                            {
+                                "variable": "user",
+                                "label": "User ID",
+                                "description": "The user id that Syncthing will run as.",
+                                "schema": {
+                                    "type": "int",
+                                    "min": 568,
+                                    "default": 568,
+                                    "required": true
+                                }
+                            },
+                            {
+                                "variable": "group",
+                                "label": "Group ID",
+                                "description": "The group id that Syncthing will run as.",
+                                "schema": {
+                                    "type": "int",
+                                    "min": 568,
+                                    "default": 568,
+                                    "required": true
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "variable": "network",
+                    "label": "",
+                    "group": "Network Configuration",
+                    "schema": {
+                        "type": "dict",
+                        "attrs": [
+                            {
+                                "variable": "web_port",
+                                "label": "Web UI Port",
+                                "description": "The port for the Syncthing Web UI.",
+                                "schema": {
+                                    "type": "int",
+                                    "default": 8384,
+                                    "required": true,
+                                    "$ref": [
+                                        "definitions/port"
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "tcp_port",
+                                "label": "TCP Port (File Transfers)",
+                                "description": "The TCP port for Syncthing transfers.",
+                                "schema": {
+                                    "type": "int",
+                                    "default": 22000,
+                                    "show_if": [
+                                        [
+                                            "host_network",
+                                            "=",
+                                            false
+                                        ]
+                                    ],
+                                    "required": true,
+                                    "$ref": [
+                                        "definitions/port"
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "quic_port",
+                                "label": "QUIC (UDP) Port (File Transfers)",
+                                "description": "The QUIC (UDP) port for Syncthing transfers.",
+                                "schema": {
+                                    "type": "int",
+                                    "default": 22000,
+                                    "show_if": [
+                                        [
+                                            "host_network",
+                                            "=",
+                                            false
+                                        ]
+                                    ],
+                                    "required": true,
+                                    "$ref": [
+                                        "definitions/port"
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "host_network",
+                                "label": "Host Network",
+                                "description": "Bind to the host network.</br></br>\nIf this is disabled, you will need to add your local networks in CIDR format to the Syncthing WebUI.</br>\nIn the Syncthing WebUI, go to Advanced Settings > Options > Always Local Nets</br>\nSeparate each CIDR network with a comma.</br>\nExample: 192.168.0.0/24,192.168.1.0/24\n",
+                                "schema": {
+                                    "type": "boolean",
+                                    "default": true
+                                }
+                            },
+                            {
+                                "variable": "certificate_id",
+                                "label": "Certificate",
+                                "description": "The certificate to use for Syncthing",
+                                "schema": {
+                                    "type": "int",
+                                    "null": true,
+                                    "$ref": [
+                                        "definitions/certificate"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "variable": "storage",
+                    "label": "",
+                    "group": "Storage Configuration",
+                    "schema": {
+                        "type": "dict",
+                        "attrs": [
+                            {
+                                "variable": "home",
+                                "label": "Syncthing Home Storage",
+                                "description": "The path to store Syncthing Home.",
+                                "schema": {
+                                    "type": "dict",
+                                    "attrs": [
+                                        {
+                                            "variable": "type",
+                                            "label": "Type",
+                                            "description": "ixVolume: Is dataset created automatically by the system.</br>\nHost Path: Is a path that already exists on the system.\n",
+                                            "schema": {
+                                                "type": "string",
+                                                "required": true,
+                                                "immutable": true,
+                                                "default": "ix_volume",
+                                                "enum": [
+                                                    {
+                                                        "value": "host_path",
+                                                        "description": "Host Path (Path that already exists on the system)"
+                                                    },
+                                                    {
+                                                        "value": "ix_volume",
+                                                        "description": "ixVolume (Dataset created automatically by the system)"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "variable": "ix_volume_config",
+                                            "label": "ixVolume Configuration",
+                                            "description": "The configuration for the ixVolume dataset.",
+                                            "schema": {
+                                                "type": "dict",
+                                                "show_if": [
+                                                    [
+                                                        "type",
+                                                        "=",
+                                                        "ix_volume"
+                                                    ]
+                                                ],
+                                                "$ref": [
+                                                    "normalize/ix_volume"
+                                                ],
+                                                "attrs": [
+                                                    {
+                                                        "variable": "acl_enable",
+                                                        "label": "Enable ACL",
+                                                        "description": "Enable ACL for the storage.",
+                                                        "schema": {
+                                                            "type": "boolean",
+                                                            "default": false
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "dataset_name",
+                                                        "label": "Dataset Name",
+                                                        "description": "The name of the dataset to use for storage.",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true,
+                                                            "immutable": true,
+                                                            "hidden": true,
+                                                            "default": "home"
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "acl_entries",
+                                                        "label": "ACL Configuration",
+                                                        "schema": {
+                                                            "type": "dict",
+                                                            "show_if": [
+                                                                [
+                                                                    "acl_enable",
+                                                                    "=",
+                                                                    true
+                                                                ]
+                                                            ],
+                                                            "attrs": []
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "variable": "host_path_config",
+                                            "label": "Host Path Configuration",
+                                            "schema": {
+                                                "type": "dict",
+                                                "show_if": [
+                                                    [
+                                                        "type",
+                                                        "=",
+                                                        "host_path"
+                                                    ]
+                                                ],
+                                                "attrs": [
+                                                    {
+                                                        "variable": "acl_enable",
+                                                        "label": "Enable ACL",
+                                                        "description": "Enable ACL for the storage.",
+                                                        "schema": {
+                                                            "type": "boolean",
+                                                            "default": false
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "acl",
+                                                        "label": "ACL Configuration",
+                                                        "schema": {
+                                                            "type": "dict",
+                                                            "show_if": [
+                                                                [
+                                                                    "acl_enable",
+                                                                    "=",
+                                                                    true
+                                                                ]
+                                                            ],
+                                                            "attrs": [],
+                                                            "$ref": [
+                                                                "normalize/acl"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "path",
+                                                        "label": "Host Path",
+                                                        "description": "The host path to use for storage.",
+                                                        "schema": {
+                                                            "type": "hostpath",
+                                                            "show_if": [
+                                                                [
+                                                                    "acl_enable",
+                                                                    "=",
+                                                                    false
+                                                                ]
+                                                            ],
+                                                            "required": true
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "variable": "additional_storage",
+                                "label": "Additional Storage",
+                                "description": "Additional storage for Audiobookshelf.",
+                                "schema": {
+                                    "type": "list",
+                                    "default": [],
+                                    "items": [
+                                        {
+                                            "variable": "storageEntry",
+                                            "label": "Storage Entry",
+                                            "schema": {
+                                                "type": "dict",
+                                                "attrs": [
+                                                    {
+                                                        "variable": "type",
+                                                        "label": "Type",
+                                                        "description": "Host Path: Is a path that already exists on the system.</br>\nSMB Share: Is a SMB share that is mounted to a persistent volume claim.\n",
+                                                        "schema": {
+                                                            "type": "string",
+                                                            "required": true,
+                                                            "default": "ixVolume",
+                                                            "immutable": true,
+                                                            "enum": [
+                                                                {
+                                                                    "value": "host_path",
+                                                                    "description": "Host Path (Path that already exists on the system)"
+                                                                },
+                                                                {
+                                                                    "value": "cifs",
+                                                                    "description": "SMB/CIFS Share (Mounts a persistent volume claim to a SMB share)"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "read_only",
+                                                        "label": "Read Only",
+                                                        "description": "Mount the volume as read only.",
+                                                        "schema": {
+                                                            "type": "boolean",
+                                                            "default": false
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "mount_path",
+                                                        "label": "Mount Path",
+                                                        "description": "The path inside the container to mount the storage.",
+                                                        "schema": {
+                                                            "type": "path",
+                                                            "required": true
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "host_path_config",
+                                                        "label": "Host Path Configuration",
+                                                        "schema": {
+                                                            "type": "dict",
+                                                            "show_if": [
+                                                                [
+                                                                    "type",
+                                                                    "=",
+                                                                    "host_path"
+                                                                ]
+                                                            ],
+                                                            "attrs": [
+                                                                {
+                                                                    "variable": "acl_enable",
+                                                                    "label": "Enable ACL",
+                                                                    "description": "Enable ACL for the storage.",
+                                                                    "schema": {
+                                                                        "type": "boolean",
+                                                                        "default": false
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "acl",
+                                                                    "label": "ACL Configuration",
+                                                                    "schema": {
+                                                                        "type": "dict",
+                                                                        "show_if": [
+                                                                            [
+                                                                                "acl_enable",
+                                                                                "=",
+                                                                                true
+                                                                            ]
+                                                                        ],
+                                                                        "attrs": [],
+                                                                        "$ref": [
+                                                                            "normalize/acl"
+                                                                        ]
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "path",
+                                                                    "label": "Host Path",
+                                                                    "description": "The host path to use for storage.",
+                                                                    "schema": {
+                                                                        "type": "hostpath",
+                                                                        "show_if": [
+                                                                            [
+                                                                                "acl_enable",
+                                                                                "=",
+                                                                                false
+                                                                            ]
+                                                                        ],
+                                                                        "required": true
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "variable": "cifs_config",
+                                                        "label": "SMB Configuration",
+                                                        "description": "The configuration for the SMB dataset.",
+                                                        "schema": {
+                                                            "type": "dict",
+                                                            "show_if": [
+                                                                [
+                                                                    "type",
+                                                                    "=",
+                                                                    "cifs"
+                                                                ]
+                                                            ],
+                                                            "attrs": [
+                                                                {
+                                                                    "variable": "migration_mode",
+                                                                    "label": "Migration Mode",
+                                                                    "description": "NOTE: This only works properly with TrueNAS SCALE 24.04.0 or newer.<br/>\n\nEnabling this will force the following:</br>\n- Read Only Mount, regardless of the value of the Read Only checkbox.</br>\n- SMB/CIFS Mount Options will be set to \"vers=3.0\", \"cifsacl\", \"noperm\"</br>\n\nThis option is used to migrate data from third party</br>\nNAS platforms onto TrueNAS SCALE.</br>\n\nKeep in mind that the ACL preservation is not guaranteed when:</br>\n- Non-AD environment</br>\n- ACL or remote server contains local users</br>\n",
+                                                                    "schema": {
+                                                                        "type": "boolean",
+                                                                        "default": false
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "server",
+                                                                    "label": "Server",
+                                                                    "description": "The server to mount the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string",
+                                                                        "required": true
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "path",
+                                                                    "label": "Path",
+                                                                    "description": "The path to mount the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string",
+                                                                        "required": true
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "username",
+                                                                    "label": "Username",
+                                                                    "description": "The username to use for the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string",
+                                                                        "required": true
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "password",
+                                                                    "label": "Password",
+                                                                    "description": "The password to use for the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string",
+                                                                        "required": true,
+                                                                        "private": true
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "variable": "domain",
+                                                                    "label": "Domain",
+                                                                    "description": "The domain to use for the SMB share.",
+                                                                    "schema": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "variable": "resources",
+                    "label": "",
+                    "group": "Resources Configuration",
+                    "schema": {
+                        "type": "dict",
+                        "attrs": [
+                            {
+                                "variable": "limits",
+                                "label": "Limits",
+                                "schema": {
+                                    "type": "dict",
+                                    "attrs": [
+                                        {
+                                            "variable": "cpus",
+                                            "label": "CPUs",
+                                            "description": "CPUs limit for Syncthing.",
+                                            "schema": {
+                                                "type": "int",
+                                                "default": 2,
+                                                "required": true
+                                            }
+                                        },
+                                        {
+                                            "variable": "memory",
+                                            "label": "Memory (in MB)",
+                                            "description": "Memory limit for Syncthing.",
+                                            "schema": {
+                                                "type": "int",
+                                                "default": 4096,
+                                                "required": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "readme": "<h1>Syncthing</h1> <p><a href=\"https://syncthing.net/\">Syncthing</a> is a file synchronization program.</p> <p>At each startup of the application, the following settings are applied:</p> <ul> <li>Disable automatic upgrades</li> <li>Disable anonymous usage reporting</li> <li>Disable NAT traversal</li> <li>Disable global discovery</li> <li>Disable local discovery</li> <li>Disable relaying</li> <li>Disable announcing LAN addresses</li> </ul> <p>Additionally, the following defaults are set for new syncthing \"folders\":</p> <ul> <li>Max total size of <code>xattr</code>: 10 MiB</li> <li>Max size per <code>xattr</code>: 2 MiB</li> <li>Enable <code>send</code> and <code>sync</code> of <code>xattr</code></li> <li>Enable <code>send</code> and <code>sync</code> of <code>ownership</code></li> </ul>",
+        "changelog": null
+    }
+}

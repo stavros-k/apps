@@ -1,13 +1,13 @@
 {
-    "1.0.2": {
+    "1.0.6": {
         "healthy": true,
         "supported": true,
         "healthy_error": null,
-        "location": "/__w/apps/apps/trains/community/kavita/1.0.2",
-        "last_update": "2024-08-13 07:45:28",
+        "location": "/__w/apps/apps/trains/community/kavita/1.0.6",
+        "last_update": "2024-08-23 22:43:51",
         "required_features": [],
-        "human_version": "0.8.2_1.0.2",
-        "version": "1.0.2",
+        "human_version": "0.8.2_1.0.6",
+        "version": "1.0.6",
         "app_metadata": {
             "app_version": "0.8.2",
             "capabilities": [
@@ -44,7 +44,7 @@
                 "manga"
             ],
             "lib_version": "1.0.0",
-            "lib_version_hash": "909c14fa5586b5738632ff5ec8489eb26af143ecc601cf199df0b8b9e6d6a10c",
+            "lib_version_hash": "66ead85a4b23fec4388da34e481b2041aa26171deaa90b5229f112a7ec519f2b",
             "maintainers": [
                 {
                     "email": "dev@ixsystems.com",
@@ -75,7 +75,7 @@
             ],
             "title": "Kavita",
             "train": "community",
-            "version": "1.0.2"
+            "version": "1.0.6"
         },
         "schema": {
             "groups": [
@@ -529,7 +529,7 @@
                                                                 [
                                                                     "type",
                                                                     "=",
-                                                                    "smb"
+                                                                    "cifs"
                                                                 ]
                                                             ],
                                                             "attrs": [
@@ -631,7 +631,7 @@
                 }
             ]
         },
-        "readme": "<h1>Kavita</h1>\n<p><a href=\"https://www.kavitareader.com\">Kavita</a> is a fast, feature rich, cross platform reading server.</p>",
+        "readme": "<h1>Kavita</h1> <p><a href=\"https://www.kavitareader.com\">Kavita</a> is a fast, feature rich, cross platform reading server.</p>",
         "changelog": null
     }
 }

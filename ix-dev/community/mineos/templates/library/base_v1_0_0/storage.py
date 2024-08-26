@@ -1,4 +1,6 @@
 import re
+import json
+import hashlib
 
 from . import utils
 
@@ -35,7 +37,7 @@ def vol_mount(data, values=None):
         "read_only": data.get("read_only", False),
     }
     if vol_type == "bind":  # Default create_host_path is true in short-syntax
-        volume.update(_get_bind_vol_config(data, ix_volumes))
+        volume.update(_get_bind_vol_config(data, values, ix_volumes))
     elif vol_type == "volume":
         volume.update(_get_volume_vol_config(data))
     elif vol_type == "tmpfs":
@@ -65,15 +67,14 @@ def storage_item(data, values=None, perm_opts=None):
 def perms_item(data, values=None, opts=None):
     opts = opts or {}
     values = values or {}
-    ix_context = values.get("ix_context") or {}
     vol_type = data.get("type", "")
 
     # Temp volumes are always auto permissions
     if vol_type == "temporary":
         data.update({"auto_permissions": True})
 
-    # If its ix_volume and we are installing, we need to set auto permissions
-    if vol_type == "ix_volume" and ix_context.get("is_install", False):
+    # If its ix_volume, we need to set auto permissions
+    if vol_type == "ix_volume":
         data.update({"auto_permissions": True})
 
     if not data.get("auto_permissions"):
@@ -107,7 +108,23 @@ def perms_item(data, values=None, opts=None):
     }
 
 
-def _get_bind_vol_config(data, ix_volumes=None):
+def create_host_path_default(values):
+    """
+    By default, do not create host path for bind mounts if it does not exist.
+    If the ix_context is missing, we are either in local dev or CI.
+    We should create the host path by default there to ease development.
+    The _magic_ "dev_mode" flag is added so we can also toggle this behavior
+    in CI, while we are also using ix_context for other tests.
+    """
+    ix_ctx = values.get("ix_context", {})
+    if not ix_ctx:
+        return True
+    if "dev_mode" in ix_ctx:
+        return ix_ctx["dev_mode"]
+    return False
+
+
+def _get_bind_vol_config(data, values, ix_volumes=None):
     ix_volumes = ix_volumes or []
     path = host_path(data, ix_volumes)
     if data.get("propagation", "rprivate") not in PROPAGATION_TYPES:
@@ -120,7 +137,7 @@ def _get_bind_vol_config(data, ix_volumes=None):
         "source": path,
         "bind": {
             "create_host_path": data.get("host_path_config", {}).get(
-                "create_host_path", True
+                "create_host_path", create_host_path_default(values)
             ),
             "propagation": _get_valid_propagation(data),
         },
@@ -128,6 +145,10 @@ def _get_bind_vol_config(data, ix_volumes=None):
 
 
 def _get_volume_vol_config(data):
+    if data.get("type") in ["nfs", "cifs"]:
+        if data.get("volume_name"):
+            utils.throw_error("Expected [volume_name] to be empty for [nfs, cifs] type")
+        data.update({"volume_name": _get_name_for_external_volume(data)})
     if not data.get("volume_name"):
         utils.throw_error("Expected [volume_name] to be set for [volume] type")
 
@@ -161,6 +182,14 @@ def _get_tmpfs_vol_config(data):
         tmpfs.update({"mode": int(config["mode"], 8)})
 
     return {"tmpfs": tmpfs}
+
+
+# We generate a unique name for the volume based on the config
+# Docker will not update any volume after creation. This is to ensure
+# that changing any value (eg server address) in the config will result in a new volume
+def _get_name_for_external_volume(data):
+    config_hash = hashlib.sha256(json.dumps(data).encode("utf-8")).hexdigest()
+    return f"{data['type']}_{config_hash}"
 
 
 # Returns a volume object (Used in top "volumes" level)
@@ -309,7 +338,7 @@ def _process_cifs(data):
             opts.append(opt)
 
     server = data["cifs_config"]["server"].lstrip("/")
-    path = data["cifs_config"]["path"]
+    path = data["cifs_config"]["path"].strip("/")
     volume = {
         "driver_opts": {
             "type": "cifs",

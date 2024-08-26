@@ -1,13 +1,13 @@
 {
-    "1.0.2": {
+    "1.0.6": {
         "healthy": true,
         "supported": true,
         "healthy_error": null,
-        "location": "/__w/apps/apps/trains/community/logseq/1.0.2",
-        "last_update": "2024-08-13 07:45:28",
+        "location": "/__w/apps/apps/trains/community/logseq/1.0.6",
+        "last_update": "2024-08-23 22:43:51",
         "required_features": [],
-        "human_version": "latest_1.0.2",
-        "version": "1.0.2",
+        "human_version": "latest_1.0.6",
+        "version": "1.0.6",
         "app_metadata": {
             "app_version": "latest",
             "capabilities": [],
@@ -23,7 +23,7 @@
                 "management"
             ],
             "lib_version": "1.0.0",
-            "lib_version_hash": "909c14fa5586b5738632ff5ec8489eb26af143ecc601cf199df0b8b9e6d6a10c",
+            "lib_version_hash": "66ead85a4b23fec4388da34e481b2041aa26171deaa90b5229f112a7ec519f2b",
             "maintainers": [
                 {
                     "email": "dev@ixsystems.com",
@@ -47,7 +47,7 @@
             ],
             "title": "Logseq",
             "train": "community",
-            "version": "1.0.2"
+            "version": "1.0.6"
         },
         "schema": {
             "groups": [
@@ -383,7 +383,7 @@
                                                                 [
                                                                     "type",
                                                                     "=",
-                                                                    "smb"
+                                                                    "cifs"
                                                                 ]
                                                             ],
                                                             "attrs": [
@@ -485,7 +485,7 @@
                 }
             ]
         },
-        "readme": "<h1>Logseq</h1>\n<p><a href=\"https://logseq.com/\">Logseq</a> is a privacy-first, open-source platform for knowledge management and collaboration.</p>\n<p>HTTPS is <strong>required</strong> in order to use Logseq.</p>\n<p>Either by using the Certificate selection or with an external reverse proxy.</p>",
+        "readme": "<h1>Logseq</h1> <p><a href=\"https://logseq.com/\">Logseq</a> is a privacy-first, open-source platform for knowledge management and collaboration.</p> <p>HTTPS is <strong>required</strong> in order to use Logseq.</p> <p>Either by using the Certificate selection or with an external reverse proxy.</p>",
         "changelog": null
     }
 }

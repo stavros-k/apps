@@ -35,7 +35,7 @@ Thank you for your understanding.
 | bazarr               | community  | ✅    | ✅       |
 | briefkasten          | community  | ✅    | -        |
 | castopod             | community  | -     | -        |
-| chia                 | community  | -     | -        |
+| chia                 | community  | ✅    | -        |
 | clamav               | community  | ✅    | -        |
 | cloudflared          | community  | ✅    | -        |
 | dashy                | community  | ✅    | -        |
@@ -44,7 +44,7 @@ Thank you for your understanding.
 | distribution         | community  | ✅    | -        |
 | drawio               | community  | ✅    | -        |
 | filebrowser          | community  | ✅    | -        |
-| firefly-iii          | community  | -     | -        |
+| firefly-iii          | community  | ✅    | -        |
 | flame                | community  | ✅    | -        |
 | freshrss             | community  | ✅    | -        |
 | frigate              | community  | -     | -        |
@@ -60,7 +60,7 @@ Thank you for your understanding.
 | ipfs                 | community  | ✅    | -        |
 | jellyfin             | community  | ✅    | ✅       |
 | jellyseerr           | community  | ✅    | -        |
-| jenkins              | community  | -     | -        |
+| jenkins              | community  | ✅    | -        |
 | joplin               | community  | ✅    | -        |
 | kapowarr             | community  | ✅    | -        |
 | kavita               | community  | ✅    | -        |
@@ -69,7 +69,7 @@ Thank you for your understanding.
 | linkding             | community  | -     | -        |
 | listmonk             | community  | -     | -        |
 | logseq               | community  | ✅    | -        |
-| mealie               | community  | -     | -        |
+| mealie               | community  | ✅    | -        |
 | metube               | community  | ✅    | -        |
 | minecraft            | community  | ✅    | -        |
 | mineos               | community  | ✅    | -        |
@@ -115,10 +115,17 @@ Thank you for your understanding.
 | unifi-controller     | community  | ✅    | -        |
 | unifi-protect-backup | community  | ✅    | -        |
 | vaultwarden          | community  | -     | -        |
-| vikunja              | community  | -     | -        |
+| vikunja              | community  | ✅    | -        |
 | webdav               | community  | -     | -        |
 | whoogle              | community  | ✅    | -        |
 | wordpress            | community  | -     | -        |
 | zerotier             | community  | ✅    | -        |
-| minio                | enterprise | -     | -        |
-| syncthing            | enterprise | -     | -        |
+| minio                | enterprise | ✅    | ✅       |
+| syncthing            | enterprise | ✅    | ✅       |
+
+## New Apps
+
+|     | App       | Train     |
+| --- | --------- | --------- |
+| ⭐  | portainer | community |
+| ⭐  | dockge    | community |
