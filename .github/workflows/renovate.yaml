@@ -23,4 +23,4 @@ jobs:
           RENOVATE_PR_HOURLY_LIMIT: 10
         with:
           configurationFile: .github/renovate-config.js
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RENOVATE_TOKEN }}

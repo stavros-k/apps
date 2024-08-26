@@ -9,7 +9,7 @@ module.exports = {
   // https://docs.renovatebot.com/self-hosted-configuration/#platform
   platform: "github",
   // https://docs.renovatebot.com/self-hosted-configuration/#repositories
-  repositories: ["truenas/apps"],
+  repositories: ["stavros-k/truenas-apps"],
   // https://docs.renovatebot.com/self-hosted-configuration/#allowpostupgradecommandtemplating
   allowPostUpgradeCommandTemplating: true,
   // https://docs.renovatebot.com/self-hosted-configuration/#allowedpostupgradecommands
