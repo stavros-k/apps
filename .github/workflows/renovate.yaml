@@ -24,3 +24,8 @@ jobs:
           configurationFile: .github/renovate-config.js
           # https://github.com/renovatebot/github-action/tree/main?tab=readme-ov-file#special-token-requirements-when-using-the-github-actions-manager
           token: ${{ secrets.RENOVATE_TOKEN }}
+      
+      - name: debug
+        shell: bash
+        run: |
+          cat ./renovate.log
