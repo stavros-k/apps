@@ -22,6 +22,8 @@ words:
   - cpus
   - creds
   - cuda
+  - datasource
+  - datasources
   - ddns
   - ddnss
   - desec
@@ -169,6 +171,7 @@ words:
   - tailscale
   - tailscaled
   - tautulli
+  - templating
   - tdarr
   - tensorchord
   - tftpd
