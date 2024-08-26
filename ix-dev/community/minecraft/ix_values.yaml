@@ -31,7 +31,7 @@ images:
     tag: 2024.6.0-java17-jdk
   j17_gce_image:
     repository: itzg/minecraft-server
-    tag: 2023.8.3-java17-graalvm-ce
+    tag: 2023.9.1-java17-graalvm-ce
   j17_alpine_image:
     repository: itzg/minecraft-server
     tag: 2024.6.0-java17-alpine
