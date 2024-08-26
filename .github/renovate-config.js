@@ -59,5 +59,11 @@ module.exports = {
       matchUpdateTypes: ["patch"],
       labels: ["patch"],
     },
+    // Group apps
+    {
+      matchDatasources: ["docker"],
+      matchFileNames: ["immich/**"],
+      groupName: "immich",
+    }
   ],
 };
