@@ -9,13 +9,11 @@ concurrency:
 
 jobs:
   renovate:
-    runs-on: actions-runner-large
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
         with:
-          # TODO: Special token
-          # https://github.com/renovatebot/github-action/tree/main?tab=readme-ov-file#special-token-requirements-when-using-the-github-actions-manager
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@v40.2.5
@@ -23,4 +21,5 @@ jobs:
           RENOVATE_PR_HOURLY_LIMIT: 10
         with:
           configurationFile: .github/renovate-config.js
+          # https://github.com/renovatebot/github-action/tree/main?tab=readme-ov-file#special-token-requirements-when-using-the-github-actions-manager
           token: ${{ secrets.RENOVATE_TOKEN }}
