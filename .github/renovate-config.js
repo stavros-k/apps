@@ -37,7 +37,9 @@ module.exports = {
       postUpgradeTasks: {
         // What to "git add" after the commands are run
         fileFilters: ["**/app.yaml", "**/renovate.log"],
-        executionMode: "branch",
+        // Execute the following commands for every dep.
+        // TODO: Check that it wont run multiple times per app.
+        executionMode: "update",
         commands: [
           // See what we get. TODO: come back and add a script to bump app.yaml (and the app lib if any)
           "echo {{{packageFileDir}}}, {{{depName}}}, {{{currentValue}}} - {{{newValue}}} >> ./renovate.log",
