@@ -36,14 +36,15 @@ module.exports = {
       matchDatasources: ["docker"],
       postUpgradeTasks: {
         // What to "git add" after the commands are run
+        // TODO: remove renovate.log after testing
         fileFilters: ["**/app.yaml", "**/renovate.log"],
         // Execute the following commands for every dep.
         // TODO: Check that it wont run multiple times per app.
         executionMode: "update",
         commands: [
-          // If the app ins't bumped already, bump.
+          // If the app is in the renovate.log, don't bump again.
           // TODO: change echo command to a bump version script
-          "git diff --name-only | grep --quiet {{{packageFileDir}}}/app.yaml || echo 'bumping {{{packageFileDir}}} from {{{currentValue}}} to {{{newValue}}} ({{{depName}}})' >> ./renovate.log",
+          "grep --quiet {{{packageFileDir}}} ./renovate.log || echo 'bumping {{{packageFileDir}}} from {{{currentValue}}} to {{{newValue}}} ({{{depName}}})' >> ./renovate.log",
         ],
       },
     },
