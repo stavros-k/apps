@@ -52,18 +52,14 @@ module.exports = {
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["minor"],
+      groupName: "updates-patch-minor",
       labels: ["minor"],
     },
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["patch"],
+      groupName: "updates-patch-minor",
       labels: ["patch"],
     },
-    // Group apps
-    {
-      matchDatasources: ["docker"],
-      matchFileNames: ["immich/**"],
-      groupName: "immich",
-    }
   ],
 };
