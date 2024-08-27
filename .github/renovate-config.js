@@ -41,8 +41,9 @@ module.exports = {
         // TODO: Check that it wont run multiple times per app.
         executionMode: "update",
         commands: [
-          // See what we get. TODO: come back and add a script to bump app.yaml (and the app lib if any)
-          "echo {{{packageFileDir}}}, {{{depName}}}, {{{currentValue}}} - {{{newValue}}} >> ./renovate.log",
+          // If the app ins't bumped already, bump.
+          // TODO: change echo command to a bump version script
+          "git diff --name-only | grep --quiet {{{packageFileDir}}} || echo {{{packageFileDir}}}, {{{depName}}}, {{{currentValue}}} - {{{newValue}}} >> ./renovate.log",
         ],
       },
     },
