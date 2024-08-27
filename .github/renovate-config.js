@@ -36,8 +36,11 @@ module.exports = {
       matchDatasources: ["docker"],
       postUpgradeTasks: {
         // What to "git add" after the commands are run
-        // TODO: remove renovate.log after testing
-        fileFilters: ["**/app.yaml", "**/renovate.log"],
+        fileFilters: [
+          "**/app.yaml",      // For the version update
+          "**/templates/**",  // For the app lib versioned dir
+          "**/renovate.log"   // TODO: remove after testing
+        ],
         // Execute the following commands for every dep.
         // TODO: Check that it wont run multiple times per app.
         executionMode: "update",
