@@ -43,7 +43,7 @@ module.exports = {
         commands: [
           // If the app ins't bumped already, bump.
           // TODO: change echo command to a bump version script
-          "git diff --name-only | grep --quiet {{{packageFileDir}}} || echo {{{packageFileDir}}}, {{{depName}}}, {{{currentValue}}} - {{{newValue}}} >> ./renovate.log",
+          "git diff --name-only | grep --quiet {{{packageFileDir}}} || echo bumping {{{packageFileDir}}} from {{{currentValue}}} to {{{newValue}}} ({{{depName}}}) >> ./renovate.log",
         ],
       },
     },
