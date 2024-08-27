@@ -44,7 +44,7 @@ module.exports = {
         commands: [
           // If the app is in the renovate.log, don't bump again.
           // TODO: change echo command to a bump version script
-          "grep {{{packageFileDir}}} ./renovate.log || echo 'bumping {{{packageFileDir}}} from {{{currentValue}}} to {{{newValue}}} ({{{depName}}})' >> ./renovate.log",
+          "grep {{{packageFileDir}}} ./renovate.log || echo 'bumping {{{packageFileDir}}}' >> ./renovate.log",
         ],
       },
     },
