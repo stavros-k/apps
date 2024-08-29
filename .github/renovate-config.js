@@ -47,7 +47,7 @@ module.exports = {
         commands: [
           // If the app is in the renovate.log, don't bump again.
           // TODO: change echo command to a bump version script
-          "grep {{{packageFileDir}}} ./renovate.log || echo 'bumping {{{packageFileDir}}}' >> ./renovate.log; docker run --rm hello-world >> ./renovate.log",
+          "grep {{{packageFileDir}}} ./renovate.log || docker run --platform linux/amd64 --quiet --rm -v ./:/workspace ghcr.io/truenas/apps_validation:latest app_bump_version --path /workspace/{{{packageFileDir}}} --bump {{{updateType}}}",
         ],
       },
     },
