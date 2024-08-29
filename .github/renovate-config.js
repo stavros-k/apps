@@ -39,15 +39,11 @@ module.exports = {
         fileFilters: [
           "ix-dev/**/app.yaml",      // For the version update
           "ix-dev/**/templates/**",  // For the app lib versioned dir
-          "**/renovate.log"   // TODO: remove after testing
         ],
         // Execute the following commands for every dep.
-        // TODO: Check that it wont run multiple times per app.
         executionMode: "update",
         commands: [
-          // If the app is in the renovate.log, don't bump again.
-          // TODO: change echo command to a bump version script
-          "grep {{{packageFileDir}}} ./renovate.log || docker run --platform linux/amd64 --quiet --rm -v ./:/workspace ghcr.io/truenas/apps_validation:latest app_bump_version --path /workspace/{{{packageFileDir}}} --bump {{{updateType}}}",
+          "./.github/scripts/renovate_bump.sh {{{packageFileDir}}} {{{updateType}}}",
         ],
       },
     },
