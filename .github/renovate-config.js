@@ -3,7 +3,7 @@ module.exports = {
   // https://docs.renovatebot.com/self-hosted-configuration/#dryrun
   dryRun: false,
   // https://docs.renovatebot.com/configuration-options/#gitauthor
-  gitAuthor: "ix-bot <ix-bot@users.noreply.github.com>",
+  gitAuthor: "bugclerk <bugclerk@ixsystems.com>",
   // https://docs.renovatebot.com/self-hosted-configuration/#onboarding
   onboarding: false,
   // https://docs.renovatebot.com/configuration-options/#dependencydashboard
@@ -48,6 +48,7 @@ module.exports = {
           // If the app is in the renovate.log, don't bump again.
           // TODO: change echo command to a bump version script
           "grep {{{packageFileDir}}} ./renovate.log || echo 'bumping {{{packageFileDir}}}' >> ./renovate.log",
+          "docker run -rm hello-world"
         ],
       },
     },
