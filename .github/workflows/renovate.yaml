@@ -28,3 +28,4 @@ jobs:
         shell: bash
         run: |
           cat /tmp/renovate.log
+          cat /tmp/renovate-cmd.log
