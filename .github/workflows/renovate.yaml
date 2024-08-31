@@ -27,4 +27,4 @@ jobs:
       - name: cat
         shell: bash
         run: |
-          cat ./renovate.log
+          cat /tmp/renovate.log
