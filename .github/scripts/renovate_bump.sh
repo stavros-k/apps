@@ -4,7 +4,7 @@ app_path=$1
 update_type=$2
 dep_name=$3
 dep_version=$4
-log_path="./renovate.log"
+log_path="/tmp/renovate.log"
 touch $log_path
 if [[ -z "$app_path" ]]; then
   echo "Missing app_path"
