@@ -24,3 +24,7 @@ jobs:
           configurationFile: .github/renovate-config.js
           token: ${{ secrets.RENOVATE_TOKEN }}
           mount-docker-socket: true
+      - name: cat
+        shell: bash
+        run: |
+          cat ./renovate.log
