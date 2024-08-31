@@ -5,7 +5,9 @@ update_type=$2
 dep_name=$3
 dep_version=$4
 log_path="/tmp/renovate.log"
-touch $log_path
+if [ ! -f "$log_path" ]; then
+  touch $log_path
+fi
 if [[ -z "$app_path" ]]; then
   echo "Missing app_path"
   exit 1
